@@ -15,6 +15,23 @@
             $this->db = $db;
         }
 
+        public function get_accounts(){
+            $query_teacher = "
+                    SELECT
+                        teachers.acc_id AS teacher_id,
+                        full_name,
+                        position,
+                        total_credits
+                        FROM accounts
+                    INNER JOIN teachers
+                        ON teachers.acc_id = accounts.acc_id;
+            ";
+
+            $stmt = $this->db->prepare($query_teacher);
+            $stmt->execute();
+            return $stmt;
+        }
+
         public function create_teacher(){
             $get_acc_id = "SELECT acc_id FROM accounts WHERE email=:email";
             $query_stmt = $this->db->prepare($get_acc_id);
