@@ -7,7 +7,7 @@
     header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
     require __DIR__ . '/../../config/Database.php';
-    require __DIR__ . '/../../classes/Admin.php';
+    require __DIR__ . '/../../classes/Service.php';
     require __DIR__ . '/../../accounts/CheckAuth.php';
 
     function msg($success, $status, $message, $extra = []){
@@ -20,7 +20,7 @@
 
     $database = new Database();
     $conn = $database->getConnection();
-    $obj = new Admin($conn);
+    $obj = new Service($conn);
 
 
     // DATA FORM REQUEST
@@ -41,12 +41,14 @@
 
         if($auth['success'] == 1){
             try{
-                $obj->acc_id = $data->acc_id;
-                $result = $obj->del_acc();
+                $obj->teacher_id = $data->teacher_id;
+                $obj->service_id = $data->service_id;
+
+                $result = $obj->deleteService();
 
                 if($result == 1){
                     http_response_code(200);
-                    $returnData = msg(1, 200, 'Account deleted succesfuly');
+                    $returnData = msg(1, 200, 'Service deleted succesfuly');
                 }
                 else{
                         http_response_code(500);
