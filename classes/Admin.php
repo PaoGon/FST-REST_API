@@ -32,6 +32,7 @@
             return $stmt;
         }
 
+        // helper function for create_acc()
         public function create_teacher(){
             $get_acc_id = "SELECT acc_id FROM accounts WHERE email=:email";
             $query_stmt = $this->db->prepare($get_acc_id);
@@ -48,12 +49,9 @@
             $insert_teacher->bindValue(':position', $this->position, PDO::PARAM_STR);
             $insert_teacher->execute();
 
-            if($insert_teacher->rowCount() > 0){
-                return 1;
-            }
-            else{
-                return 0;
-            }
+            if($insert_teacher->rowCount() > 0) return 1; 
+
+            return 0;
         }
 
         // Create account
@@ -74,12 +72,9 @@
 
             $create_stmt->execute();
             
-            if($create_stmt->rowCount() > 0){
-                return 1;
-            }
-            else{
-                return 0;
-            }
+            if($create_stmt->rowCount() > 0) return 1;
+
+            return 0;
         }
 
         // Delete account
@@ -93,6 +88,11 @@
             $del_stmt->bindValue(':acc_id', $this->acc_id, PDO::PARAM_INT);
             
             $del_stmt->execute();
+
+            if($del_stmt->rowCount() > 0) return 1;
+
+            return 0;
+
         }
     }
 ?>
