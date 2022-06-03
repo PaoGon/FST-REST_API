@@ -9,14 +9,8 @@
     require __DIR__ . '/../../config/Database.php';
     require __DIR__ . '/../../classes/Service.php';
     require __DIR__ . '/../../accounts/CheckAuth.php';
+    require __DIR__ . '/../../helpers/msg.php';
     
-    function msg($success,$status,$message,$extra = []){
-        return array_merge([
-            'success' => $success,
-            'status' => $status,
-            'message' => $message
-        ],$extra);
-    }
     $returnData = [];
 
     $database = new Database();

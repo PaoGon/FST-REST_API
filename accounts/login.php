@@ -8,14 +8,7 @@
 
     require __DIR__ . '/../config/Database.php';
     require_once __DIR__ . '/../classes/JwtHandler.php';
-
-    function msg($success,$status,$message,$extra = []){
-        return array_merge([
-            'success' => $success,
-            'status' => $status,
-            'message' => $message
-        ],$extra);
-    }
+    require __DIR__ . '/../helpers/msg.php';
 
     $database = new Database();
     $conn = $database->getConnection();
