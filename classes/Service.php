@@ -16,6 +16,23 @@
             $this->db = $db;
         }
 
+        public function getId($email){
+            $fetch_user_by_email = "SELECT acc_id FROM accounts WHERE email=:email";
+            $query_stmt = $this->db->prepare($fetch_user_by_email);
+            $query_stmt->bindValue(':email', $email, PDO::PARAM_INT);
+            $query_stmt->execute();
+
+            $res = $query_stmt->fetch(PDO::FETCH_ASSOC);
+            $acc_id = $res['acc_id'];
+
+            if ($query_stmt->rowCount()){
+                return $acc_id;
+            } 
+            else{
+                return false;
+            }
+        }
+
         // Get all services in descending order
         public function getServices(){
             $query_posts = "

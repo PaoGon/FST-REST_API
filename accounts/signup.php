@@ -9,11 +9,13 @@
     require __DIR__ . '/../config/Database.php';
     require __DIR__ . '/../accounts/CheckAuth.php';
     require __DIR__ . '/../classes/Admin.php';
+    require __DIR__ . '/../classes/Service.php';
     require __DIR__ . '/../helpers/msg.php';
 
     $database = new Database();
     $conn = $database->getConnection();
     $obj = new Admin($conn);
+    $service = new Service($conn);
 
 
     // DATA FORM REQUEST
@@ -92,14 +94,21 @@
                             $obj->is_admin = $is_admin;
 
                             $result = $obj->create_acc();
+                            $acc_id = $service->getId($email);
                             if($result == 1){
                                 if($is_admin == 0){
                                     $obj->position = $data->position;
-                                    $obj->create_teacher();
+                                    $obj->create_teacher($acc_id);
                                 }
 
+                                $path = __DIR__.'/../storage/'.$acc_id;
+
+                                $old = umask(0);
+                                mkdir($path, 0777);
+                                umask($old);
+
                                 http_response_code(201);
-                                $returnData = msg(1, 201, 'Account created successfully');
+                                $returnData = msg(1, 201, 'Account created successfully', array("acc_id"=> $acc_id));
                             }
                             else{
                                 http_response_code(500);

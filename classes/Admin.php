@@ -33,14 +33,8 @@
         }
 
         // helper function for create_acc()
-        public function create_teacher(){
-            $get_acc_id = "SELECT acc_id FROM accounts WHERE email=:email";
-            $query_stmt = $this->db->prepare($get_acc_id);
-            $query_stmt->bindValue(':email', $this->email,PDO::PARAM_STR);
-            $query_stmt->execute();
-            $acc_row = $query_stmt->fetch(PDO::FETCH_ASSOC);
-
-            $teacher_id = $acc_row['acc_id'];
+        public function create_teacher($acc_id){
+            $teacher_id = $acc_id;
 
             $create_teacher = "INSERT INTO teachers(acc_id, position) VALUES(:acc_id, :position)";
             $insert_teacher = $this->db->prepare($create_teacher);
