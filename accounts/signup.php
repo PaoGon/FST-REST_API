@@ -102,9 +102,13 @@
                                 }
 
                                 $path = __DIR__.'/../storage/'.$acc_id;
+                                $profile = $path . '/profile';
+                                $service = $path . '/service';
 
                                 $old = umask(0);
                                 mkdir($path, 0777);
+                                mkdir($profile, 0777);
+                                mkdir($service, 0777);
                                 umask($old);
 
                                 http_response_code(201);

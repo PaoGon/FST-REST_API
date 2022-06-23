@@ -6,9 +6,9 @@
     header("Access-Control-Max-Age: 3600");
     header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-    require __DIR__ . '/../config/Database.php';
-    require __DIR__ . '/../accounts/CheckAuth.php';
-    require __DIR__ . '/../helpers/msg.php';
+    require __DIR__ . '/../../config/Database.php';
+    require __DIR__ . '/../../accounts/CheckAuth.php';
+    require __DIR__ . '/../../helpers/msg.php';
 
     $database = new Database();
     $conn = $database->getConnection();
@@ -32,7 +32,7 @@
 
             if($error != 1){
                 $acc_id = $_POST['acc_id'];
-                $profile_dir = __DIR__ . "/../storage/".$acc_id.'/profile/';  
+                $profile_dir = __DIR__ . "/../../storage/".$acc_id.'/service/';  
                 
                 $valid_extension = array('png', 'jpg', 'jpeg');
                 $file_extension = strtolower(pathinfo($file_name, PATHINFO_EXTENSION)); // get image file extension
