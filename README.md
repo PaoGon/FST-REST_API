@@ -1,3 +1,33 @@
+# Facutly service tracker REST API
+
+The REST API for our project [Faculty Service Tracker](https://github.com/PaoGon/faculty_service_tracker)
+
+
+
+
+
+## Project prerequisites
+
+General requirements
+* composer
+
+installation of [Composer](https://getcomposer.org/)
+## Quick start
+
+Note: clone this inside your webserver's directory
+
+1.Cloning the repository
+
+```bash
+git clone https://github.com/PaoGon/FST-REST_API.git
+```
+3.Installing dependencies
+
+```bash
+cd FST-REST_API
+composer install
+```
+
 ## API Reference
 
 ### Accounts end points
@@ -135,5 +165,35 @@ returns a JSON data with success, HTTP response code, message(successfull, faile
 | `JWT token` | `string` | **Required**. Users Authorization token/JWT token |
 | `service_id`      | `int` | **Required**. ID of service to delete |
 | `teacher_id`      | `int` | **Required**. ID of the teacher |
+
+returns a JSON data with success, HTTP response code, message(successfull, failed or Method not Allowed)
+
+#### Upload Profile Picture
+
+```http
+  POST /controllers/upload_profile
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :------------------------- |
+| `JWT token` | `string` | **Required**. Users Authorization token/JWT token |
+| `file`      | `string` | **Required**. The file |
+| `acc_id` | `int` | **Required**. The account id |
+
+returns a JSON data with success, HTTP response code, message(successfull, failed or Method not Allowed)
+
+
+
+#### Upload File
+
+```http
+  POST /controllers/services/upload_file
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :------------------------- |
+| `JWT token` | `string` | **Required**. Users Authorization token/JWT token |
+| `file`      | `string` | **Required**. The file |
+| `acc_id` | `int` | **Required**. The account id |
 
 returns a JSON data with success, HTTP response code, message(successfull, failed or Method not Allowed)
