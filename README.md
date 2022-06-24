@@ -78,7 +78,7 @@ returns a JSON data with success, HTTP response code, message(successfull, faile
 | `JWT token` | `string` | **Required**. Users Authorization token/JWT token |
 
 returns all of the existing teachers
-JSON data with success(0 or 1), HTTP response code, data(JSON {teacher_id, full_name, position, total_credits})
+JSON data with success(0 or 1), HTTP response code, data(JSON {teacher_id, full_name, position, total_credits, profile_dir})
 
 
 #### Delete account

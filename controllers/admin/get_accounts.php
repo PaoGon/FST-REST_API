@@ -38,6 +38,20 @@
 
                 if($stmt->rowCount()){
                     $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    $profile_dir = __DIR__ ."/../../storage/";
+                    $profile_url = 'http://faculty_service.local/storage/';
+
+                    foreach($data as $key => $val){
+                        // chekc if directory exis
+                        if(scandir($profile_dir . $val['teacher_id']) != null){
+                            $ls_file = scandir($profile_dir. $val['teacher_id'].'/profile');
+
+                            $data[$key]['profile_dir'] = $profile_url . $val['teacher_id'] . '/profile/' . $ls_file[2];
+                        }
+                        else{
+                            $data[$key]['profile_dir'] = null;
+                        }
+                    }
 
                     http_response_code(200);
                     echo json_encode($data);
