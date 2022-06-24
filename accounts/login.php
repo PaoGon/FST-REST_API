@@ -73,6 +73,7 @@
                             $returnData = [
                                 'success' => 1,
                                 'message' => 'You have successfully logged in.',
+                                'is_admin' => $row['is_admin'],
                                 'token' => $token
                             ];
                         }
