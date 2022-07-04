@@ -40,6 +40,27 @@
 
                 if($stmt->rowCount()){
                     $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    $service_dir = __DIR__ . '/../../storage/';
+
+                    foreach($data as $key => $val){
+                        // check if teacher's directory exist
+                        if(scandir($service_dir . $val['teacher_id']) != null){
+                            //check if service directory exist
+                            if(scandir($service_dir . $val['teacher_id'].'/service/'.$val['service_id']) != null){
+                                //list the files inside of the directory
+                                $ls_file = scandir($service_dir . $val['teacher_id'].'/service/'.$val['service_id']);
+
+                                //concatinate the file name
+                                $data[$key]['service_dir'] = $val['service_dir'] . '/' . $ls_file[2];
+                            }
+                            else{
+                                $data[$key]['service_dir'] = null;
+                            }
+                        }
+                        else{
+                            $data[$key]['service_dir'] = null;
+                        }
+                    }
 
                     http_response_code(200);
                     echo json_encode($data);

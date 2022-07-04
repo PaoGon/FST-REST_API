@@ -118,6 +118,21 @@ returns a JSON data with success, HTTP response code, message(successfull, faile
 
 returns a JSON data with success, HTTP response code, message(successfull, failed or Method not Allowed)
 
+#### Upload service picutre
+
+```http
+  POST /controllers/services/upload_service_pic.php
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :------------------------- |
+| `JWT token` | `string` | **Required**. Users Authorization token/JWT token |
+| `file`      | `string` | **Required**. The file |
+| `acc_id` | `int` | **Required**. The account id |
+| `service_id` | `int` | **Required**. The account id |
+
+returns a JSON data with success, HTTP response code, message(successfull, failed or Method not Allowed)
+
 #### Get own services
 ```http
   GET /controllers/services/get_service?teacher_id=${teacher_id}
@@ -129,7 +144,7 @@ returns a JSON data with success, HTTP response code, message(successfull, faile
 | `teacher_id`      | `int` | **Required**. ID of the teacher to fetch with |
 
 returns all services associated to the teacher from latest to oldest posts this called when viewing the users timeline
-JSON data with success(0 or 1), HTTP response code, data(JSON {service_id, teacher_id, event_name, starting_date, ending_date, venue, level_of_event, credit_point, sponsor
+JSON data with success(0 or 1), HTTP response code, data(JSON {service_id, teacher_id, event_name, starting_date, ending_date, venue, level_of_event, credit_point, sponsor, service picture DIR
 })
 
 
@@ -154,7 +169,7 @@ JSON data with success(0 or 1), HTTP response code, data(JSON {service_id, teach
 
 returns a JSON data with success, HTTP response code, message(successfull, failed or Method not Allowed)
 
-#### Delete posts
+#### Delete service
 
 ```http
   DELETE /controllers/services/delete_service
@@ -181,8 +196,6 @@ returns a JSON data with success, HTTP response code, message(successfull, faile
 | `acc_id` | `int` | **Required**. The account id |
 
 returns a JSON data with success, HTTP response code, message(successfull, failed or Method not Allowed)
-
-
 
 #### Upload File
 

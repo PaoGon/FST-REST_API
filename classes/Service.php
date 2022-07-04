@@ -45,7 +45,8 @@
                     venue, 
                     level_of_event, 
                     credit_point,
-                    sponsor
+                    sponsor,
+                    service_dir
                 FROM teachers
                 INNER JOIN services
                     ON services.teacher_id = teachers.acc_id
@@ -60,7 +61,17 @@
         // Get all the services of a certain user
         public function getOwnServices(){
             $query_service = "
-                SELECT service_id, teacher_id, event_name, starting_date, ending_date, venue, level_of_event, credit_point, sponsor
+                SELECT 
+                    service_id, 
+                    teacher_id, 
+                    event_name, 
+                    starting_date, 
+                    ending_date, 
+                    venue, 
+                    level_of_event, 
+                    credit_point, 
+                    sponsor,
+                    service_dir
                 FROM services
                 WHERE teacher_id = :teacher_id 
                 ORDER BY created_at DESC;
@@ -70,6 +81,25 @@
             $query_stmt->execute();
 
             return $query_stmt;
+        }
+
+        public function getOneService($id, $name){
+            $get_query = "
+                SELECT service_id, service_dir from services 
+                WHERE teacher_id=:teacher_id AND event_name=:event_name";
+            
+            $get_stmt = $this->db->prepare($get_query);
+            $get_stmt->bindValue(':teacher_id', $id, PDO::PARAM_INT);
+            $get_stmt->bindValue(':event_name', $name, PDO::PARAM_STR);
+
+            $get_stmt->execute();
+
+            if($get_stmt->rowCount() > 0){
+                return array("status"=> 1, "data" => $get_stmt->fetch(PDO::FETCH_ASSOC));
+            } 
+
+            return array("status" => 0);
+
         }
 
         // Create service
@@ -90,6 +120,8 @@
             $create_stmt->bindValue(':credit_point', $this->credit_point, PDO::PARAM_INT);
             
             $create_stmt->execute();
+
+            //$created_data = getOneService($this->teacher_id, $this->event_name);
 
             if($create_stmt->rowCount() > 0) return 1;
 

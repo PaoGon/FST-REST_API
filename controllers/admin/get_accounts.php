@@ -39,14 +39,14 @@
                 if($stmt->rowCount()){
                     $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     $profile_dir = __DIR__ ."/../../storage/";
-                    $profile_url = 'http://faculty_service.local/storage/';
 
                     foreach($data as $key => $val){
-                        // chekc if directory exis
+                        // check if directory exist
                         if(scandir($profile_dir . $val['teacher_id']) != null){
-                            $ls_file = scandir($profile_dir. $val['teacher_id'].'/profile');
+                            $ls_file = scandir($profile_dir . $val['teacher_id'].'/profile');
 
-                            $data[$key]['profile_dir'] = $profile_url . $val['teacher_id'] . '/profile/' . $ls_file[2];
+                            //concatinate the file name
+                            $data[$key]['profile_dir'] = $val['profile_dir'] . '/profile/' . $ls_file[2];
                         }
                         else{
                             $data[$key]['profile_dir'] = null;

@@ -21,7 +21,8 @@
                         teachers.acc_id AS teacher_id,
                         full_name,
                         position,
-                        total_credits
+                        total_credits,
+                        profile_dir
                         FROM accounts
                     INNER JOIN teachers
                         ON teachers.acc_id = accounts.acc_id;

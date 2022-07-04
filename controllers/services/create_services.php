@@ -60,12 +60,26 @@
                     $result = $obj->createService();
 
                     if($result == 1){
-                        http_response_code(201);
-                        $returnData = msg(1, 201, 'Service succesfuly created');
+                        $info = $obj->getOneService($data->teacher_id, $data->event_name);
+
+                        if($info['status'] == 0){
+                            http_response_code(400);
+                            $returnData = msg(0, 400, "tangaina", array($info));
+                        }
+                        else{
+                            $service_dir = __DIR__ . '/../../storage/' . $data->teacher_id . '/service/' . $info['data']['service_id'] . '/';
+
+                            $old = umask(0);
+                            mkdir($service_dir, 0777);
+                            umask($old);
+
+                            http_response_code(201);
+                            $returnData = msg( 0, 201, "Created Successfully");
+                        }
                     }
                     else{
                         http_response_code(500);
-                        $returnData = msg(0, 500, 'something went wrong');
+                        $returnData = msg(0, 500, 'something went wrong', array($result));
                         
                     }
                 }
