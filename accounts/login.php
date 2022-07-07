@@ -74,6 +74,7 @@
                                 'success' => 1,
                                 'message' => 'You have successfully logged in.',
                                 'is_admin' => $row['is_admin'],
+                                'profile_dir' => $row['profile_dir'],
                                 'token' => $token
                             ];
                         }

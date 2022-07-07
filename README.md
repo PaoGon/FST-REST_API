@@ -43,7 +43,7 @@ composer install
 | `email` | `string` | **Required**. Account Email |
 | `password` | `string` | **Required**. Account Password |
 
-returns the Authorization bearer key or the  JWT token and the account type
+returns the Authorization bearer key or the  JWT token, Profile URL and the account type
 
 
 #### Create account
@@ -80,6 +80,22 @@ returns a JSON data with success, HTTP response code, message(successfull, faile
 returns all of the existing teachers
 JSON data with success(0 or 1), HTTP response code, data(JSON {teacher_id, full_name, position, total_credits, profile_dir})
 
+#### Update service
+
+```http
+  PUT /controllers/admin/update_credit
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :------------------------- |
+| `JWT token` | `string` | **Required**. Users Authorization token/JWT token |
+| `teacher_id`      | `int` | **Required**. ID of the teacher |
+| `starting_date` | `date` | **Required**. The 1st day of the event |
+| `ending_date` | `date` | **Required**. The last day of the event |
+| `credit points` | `int` | **Required**. equivalent credit for the service |
+
+
+returns a JSON data with success, HTTP response code, message(successfull, failed or Method not Allowed)
 
 #### Delete account
 

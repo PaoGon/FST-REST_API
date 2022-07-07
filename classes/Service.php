@@ -128,7 +128,7 @@
             return 0;
         }
 
-        // Update service
+        // Update Credit Points
         public function updateCredit(){
             $update_query = "
                 UPDATE services

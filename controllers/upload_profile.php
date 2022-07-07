@@ -8,10 +8,13 @@
 
     require __DIR__ . '/../config/Database.php';
     require __DIR__ . '/../accounts/CheckAuth.php';
+    require __DIR__ . '/../classes/Profile.php';
     require __DIR__ . '/../helpers/msg.php';
 
     $database = new Database();
     $conn = $database->getConnection();
+
+    $obj = new Profile($conn);
     $returnData = [];
 
     // For CROSS-ORGIN RESOURCE SHARING(CORS) PREFILIGHT
@@ -32,26 +35,40 @@
 
             if($error != 1){
                 $acc_id = $_POST['acc_id'];
+                $base_url = "http://192.168.254.101/FST-REST_API/storage/";
                 $profile_dir = __DIR__ . "/../storage/".$acc_id.'/profile/';  
                 
                 $valid_extension = array('png', 'jpg', 'jpeg');
                 $file_extension = strtolower(pathinfo($file_name, PATHINFO_EXTENSION)); // get image file extension
 
-                if(in_array($file_extension, $valid_extension)){
-                    // check if the file extension is valid
+                $new_filename = "curr_porfile".".".$file_extension;
+                $tt = move_uploaded_file($path, $profile_dir.$new_filename);
+
+                if(in_array($file_extension, $valid_extension)){                        // check if the file extension is valid
                     try{
-                        if(move_uploaded_file($path, $profile_dir.$file_name)){ // move uploaded file to accounts directory
-                            http_response_code(200);
-                            $returnData = msg(0, 200, 'Profile Uploaded Successfully');
+                        if($tt){ // move uploaded file to accounts directory
+                            $obj->acc_id = $acc_id;
+                            $obj->profile_dir = $base_url.$acc_id.'/profile/'.$new_filename;
+
+                            $result = $obj->updateProfile();
+
+                            if($result == 1){
+                                http_response_code(200);
+                                $returnData = msg(0, 200, 'Profile Uploaded Successfully');
+                            }
+                            else{
+                                http_response_code(400);
+                                $returnData = msg(0, 400, 'Bad Request');
+                            }
                         }
                         else{
                             http_response_code(400);
-                            $returnData = msg(0, 400, 'Uploading Failed', array("path" => $path, "profile_dir"=> $profile_dir, "file"=> $file_name, "upload_dir" => $profile_dir.$file_name));
+                            $returnData = msg(0, 400, 'Uploading Failed', array($tt));
                         }
                     }
                     catch(Exception $e){
                         http_response_code(500);
-                        $returnData = msg(0, 500, $e);
+                        $returnData = msg(0, 500, [$e->getMessage]);
                     }
                 }
                 else{
@@ -68,7 +85,6 @@
             http_response_code(401);
             $returnData = msg(0, 401, 'Authentication Failed');
         }
-
     }
     else{
         http_response_code(405);

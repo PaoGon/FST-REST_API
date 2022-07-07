@@ -42,13 +42,7 @@
 
                     foreach($data as $key => $val){
                         // check if directory exist
-                        if(scandir($profile_dir . $val['teacher_id']) != null){
-                            $ls_file = scandir($profile_dir . $val['teacher_id'].'/profile');
-
-                            //concatinate the file name
-                            $data[$key]['profile_dir'] = $val['profile_dir'] . '/profile/' . $ls_file[2];
-                        }
-                        else{
+                        if(scandir($profile_dir . $val['teacher_id']) == null){
                             $data[$key]['profile_dir'] = null;
                         }
                     }
