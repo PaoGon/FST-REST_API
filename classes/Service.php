@@ -129,6 +129,27 @@
         }
 
         // Update service
+        public function updateCredit(){
+            $update_query = "
+                UPDATE services
+                SET 
+                    credit_point = :credit_point
+                WHERE teacher_id = :teacher_id AND service_id = :service_id 
+            ";
+
+            $update_stmt = $this->db->prepare($update_query);
+            $update_stmt->bindValue(':teacher_id', $this->teacher_id, PDO::PARAM_INT);
+            $update_stmt->bindValue(':service_id', $this->service_id, PDO::PARAM_INT);
+            $update_stmt->bindValue(':credit_point', $this->credit_point, PDO::PARAM_INT);
+            
+            $update_stmt->execute();
+
+            if($update_stmt->rowCount() > 0) return 1;
+
+            return 0;
+        }
+
+        // Update service
         public function updateService(){
             $update_query = "
                 UPDATE services

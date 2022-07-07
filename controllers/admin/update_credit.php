@@ -10,6 +10,7 @@
     require __DIR__ . '/../../classes/Service.php';
     require __DIR__ . '/../../accounts/CheckAuth.php';
     require __DIR__ . '/../../helpers/msg.php';
+    require __DIR__ . '/../../helpers/calc_days.php';
 
     $database = new Database();
     $conn = $database->getConnection();
@@ -35,11 +36,9 @@
             // Checks if all the fields is set and filled up
             if (
                 !isset($data->teacher_id)
-                || !isset($data->event_name)
+                || !isset($data->service_id)
                 || !isset($data->starting_date)
                 || !isset($data->ending_date)
-                || !isset($data->level_of_event)
-                || !isset($data->credit_point)
             ){
                 $fields = ['fields' => ['teacher_id', 'event_name', 'starting_date', 'ending_date', 'level_of_event', 'credit_point']];
                 http_response_code(400);
@@ -48,21 +47,16 @@
 
             else{
                 try{
+                    $days = calc_date($data->starting_date, $data->ending_date);
                     $obj->teacher_id = $data->teacher_id;
                     $obj->service_id = $data->service_id;
-                    $obj->event_name = $data->event_name;
-                    $obj->starting_date = $data->starting_date;
-                    $obj->ending_date = $data->ending_date;
-                    $obj->level_of_event = $data->level_of_event;
-                    $obj->credit_point = $data->credit_point;
-                    $obj->venue = $data->venue;
-                    $obj->sponsor = $data->sponsor;
+                    $obj->credit_point = $days;
 
-                    $result = $obj->updateService();
+                    $result = $obj->updateCredit();
 
                     if($result == 1){
                         http_response_code(201);
-                        $returnData = msg(1, 201, 'Post succesfuly updated');
+                        $returnData = msg(1, 201, 'Credit Points Succesfuly Updated');
                     }
                     else{
                         http_response_code(500);
@@ -86,4 +80,6 @@
         $returnData = msg(0, 405, 'Method not allowed!');
     }
     echo json_encode($returnData);
+
+
 ?>
