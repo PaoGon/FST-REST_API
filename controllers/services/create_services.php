@@ -40,11 +40,10 @@
                 || !isset($data->starting_date)
                 || !isset($data->ending_date)
                 || !isset($data->level_of_event)
-                || !isset($data->credit_point)
+            )
             ){
-                $fields = ['fields' => ['teacher_id', 'event_name', 'starting_date', 'ending_date', 'level_of_event', 'credit_point']];
                 http_response_code(400);
-                $returnData = msg(0,400,'Please Fill in all Required Fields!',$fields);
+                $returnData = msg(0,400,'Please Fill in all Required Fields!');
             }
             else{
                 try{

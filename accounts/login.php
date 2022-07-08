@@ -73,6 +73,9 @@
                             $returnData = [
                                 'success' => 1,
                                 'message' => 'You have successfully logged in.',
+                                'full_name' => $row['full_name'],
+                                'email' => $row['email'],
+                                'gender' => $row['gender'],
                                 'is_admin' => $row['is_admin'],
                                 'profile_dir' => $row['profile_dir'],
                                 'token' => $token

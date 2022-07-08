@@ -43,7 +43,7 @@ composer install
 | `email` | `string` | **Required**. Account Email |
 | `password` | `string` | **Required**. Account Password |
 
-returns the Authorization bearer key or the  JWT token, Profile URL and the account type
+returns the Authorization bearer key or the  JWT token, Profile URL, Email address, Full name, Gender, and the account type
 
 
 #### Create account
