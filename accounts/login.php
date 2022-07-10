@@ -73,6 +73,7 @@
                             $returnData = [
                                 'success' => 1,
                                 'message' => 'You have successfully logged in.',
+                                'acc_id' => $row['acc_id'],
                                 'full_name' => $row['full_name'],
                                 'email' => $row['email'],
                                 'gender' => $row['gender'],

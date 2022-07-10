@@ -32,16 +32,14 @@
         $auth = $check_auth->isValid();
 
         if($auth['success'] == 1){
-
             // Checks if all the fields is set and filled up
-            if (
+            if(
                 !isset($data->teacher_id)
                 || !isset($data->event_name)
                 || !isset($data->starting_date)
                 || !isset($data->ending_date)
-                || !isset($data->level_of_event)
-            )
-            ){
+                || !isset($data->level_of_event))
+            {
                 http_response_code(400);
                 $returnData = msg(0,400,'Please Fill in all Required Fields!');
             }

@@ -41,14 +41,14 @@
                 $valid_extension = array('png', 'jpg', 'jpeg');
                 $file_extension = strtolower(pathinfo($file_name, PATHINFO_EXTENSION)); // get image file extension
 
-                $new_filename = "curr_porfile".".".$file_extension;
-                $tt = move_uploaded_file($path, $profile_dir.$new_filename);
+                //$new_filename = "curr_porfile".".".$file_extension;
 
                 if(in_array($file_extension, $valid_extension)){                        // check if the file extension is valid
                     try{
-                        if($tt){ // move uploaded file to accounts directory
-                            $obj->acc_id = $acc_id;
-                            $obj->profile_dir = $base_url.$acc_id.'/profile/'.$new_filename;
+                        $upload_status = move_uploaded_file($path, $profile_dir.$file_name);
+                        if($upload_status){ // move uploaded file to accounts directory
+                            $obj->acc_id = intval($acc_id);
+                            $obj->profile_dir = $base_url.$acc_id.'/profile/'.$file_name;
 
                             $result = $obj->updateProfile();
 
@@ -63,7 +63,7 @@
                         }
                         else{
                             http_response_code(400);
-                            $returnData = msg(0, 400, 'Uploading Failed', array($tt));
+                            $returnData = msg(0, 400, 'Uploading Failed');
                         }
                     }
                     catch(Exception $e){
@@ -73,7 +73,7 @@
                 }
                 else{
                     http_response_code(400);
-                    $returnData = msg(0,400, 'File type not allowed',array("type"=>$file_extension));
+                    $returnData = msg(0,400, 'File type not allowed',array("type"=>$profile_dir));
                 }
             }
             else{
