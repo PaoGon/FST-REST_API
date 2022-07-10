@@ -39,6 +39,7 @@
                 !isset($data->full_name)
                 || !isset($data->email)
                 || !isset($data->password)
+                || !isset($data->position)
                 || !isset($data->gender)
                 || !isset($data->is_admin)
                 || empty(trim($data->full_name))
@@ -46,10 +47,8 @@
                 || empty(trim($data->password))
                 || empty(trim($data->gender))
             ){
-                $fields = ['fields' => ['full_name', 'email', 'password', 'gender', 'is_admin']];
-                $test = [$data];
                 http_response_code(400);
-                $returnData = msg(0,400,'Please Fill in all Required Fields!',$test);
+                $returnData = msg(0,400,'Please Fill in all Required Fields!');
             }
             else{
 
