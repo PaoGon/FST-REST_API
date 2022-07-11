@@ -11,6 +11,7 @@
         public $credit_point;
         public $sponsor;
         public $venue;
+        public $total_credits;
 
         public function __construct($db){
             $this->db = $db;
@@ -124,6 +125,25 @@
             //$created_data = getOneService($this->teacher_id, $this->event_name);
 
             if($create_stmt->rowCount() > 0) return 1;
+
+            return 0;
+        }
+
+        public function updateTotalCredits(){
+            $update_query = "
+                UPDATE teachers
+                SET 
+                    total_credits = :total_credits
+                WHERE acc_id = :acc_id
+            ";
+
+            $update_stmt = $this->db->prepare($update_query);
+            $update_stmt->bindValue(':acc_id', $this->teacher_id, PDO::PARAM_INT);
+            $update_stmt->bindValue(':total_credits', $this->total_credits, PDO::PARAM_INT);
+            
+            $update_stmt->execute();
+
+            if($update_stmt->rowCount() > 0) return 1;
 
             return 0;
         }

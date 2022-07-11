@@ -39,24 +39,34 @@
                 || !isset($data->service_id)
                 || !isset($data->starting_date)
                 || !isset($data->ending_date)
+                || !isset($data->total_credits)
             ){
-                $fields = ['fields' => ['teacher_id', 'event_name', 'starting_date', 'ending_date', 'level_of_event', 'credit_point']];
                 http_response_code(400);
-                $returnData = msg(0,400,'Please Fill in all Required Fields!',$fields);
+                $returnData = msg(0,400,'Please Fill in all Required Fields!');
             }
 
             else{
                 try{
                     $days = calc_date($data->starting_date, $data->ending_date);
+                    $new_total_credits = $days + $data->total_credits;
+
                     $obj->teacher_id = $data->teacher_id;
                     $obj->service_id = $data->service_id;
                     $obj->credit_point = $days;
+                    $obj->total_credits = $new_total_credits;
 
                     $result = $obj->updateCredit();
 
                     if($result == 1){
-                        http_response_code(201);
-                        $returnData = msg(1, 201, 'Credit Points Succesfuly Updated');
+                        $update_total_credits = $obj->updateTotalCredits();
+                        if($update_total_credits == 1){
+                            http_response_code(201);
+                            $returnData = msg(1, 201, 'Credit Points Succesfuly Updated');
+                        }
+                        else{
+                            http_response_code(400);
+                            $returnData = msg(0,400,'Something went wrong');
+                        }
                     }
                     else{
                         http_response_code(500);

@@ -92,7 +92,8 @@
 
                     // IF THE USER EMAIL NOT FOUND THEN SHOW THE FOLLOWING ERROR 
                     else{
-                        $returnData = msg(0,422,'Invalid Email or Password!');
+                        http_response_code(401);
+                        $returnData = msg(0, 401, 'Invalid Email or Password!');
                     }
                 }
                 catch(PDOException $e){
