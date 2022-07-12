@@ -38,7 +38,7 @@
                 $obj->teacher_id = (int)$_GET['teacher_id'];
                 $stmt = $obj->getOwnServices();
 
-                if($stmt->rowCount()){
+                if($stmt->rowCount()>0){
                     $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     $service_dir = __DIR__ . '/../../storage/';
 

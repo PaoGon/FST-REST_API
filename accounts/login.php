@@ -8,10 +8,12 @@
 
     require __DIR__ . '/../config/Database.php';
     require_once __DIR__ . '/../classes/JwtHandler.php';
+    require_once __DIR__ . '/../classes/Profile.php';
     require __DIR__ . '/../helpers/msg.php';
 
     $database = new Database();
     $conn = $database->getConnection();
+    $obj = new Profile($conn);
 
     $data = json_decode(file_get_contents("php://input"));
     $returnData = [];
@@ -49,14 +51,17 @@
 
                 try{
 
-                    $fetch_user_by_email = "SELECT * FROM accounts WHERE email=:email";
-                    $query_stmt = $conn->prepare($fetch_user_by_email);
-                    $query_stmt->bindValue(':email', $email,PDO::PARAM_STR);
-                    $query_stmt->execute();
+                    //$fetch_user_by_email = "SELECT * FROM accounts WHERE email=:email";
+                    //$query_stmt = $conn->prepare($fetch_user_by_email);
+                    //$query_stmt->bindValue(':email', $email,PDO::PARAM_STR);
+                    //$query_stmt->execute();
+                    $obj->email = $email;
+                    $login_res = $obj->login();
+
 
                     // IF THE USER IS FOUNDED BY EMAIL
-                    if($query_stmt->rowCount()){
-                        $row = $query_stmt->fetch(PDO::FETCH_ASSOC);
+                    if($login_res->rowCount()>0){
+                        $row = $login_res->fetch(PDO::FETCH_ASSOC);
                         $check_password = password_verify($password, $row['password']);
 
                         // VERIFYING THE PASSWORD 
@@ -69,18 +74,47 @@
                                 array('acc_id'=>$row['acc_id'])
                             );
 
-                            http_response_code(200);
-                            $returnData = [
-                                'success' => 1,
-                                'message' => 'You have successfully logged in.',
-                                'acc_id' => $row['acc_id'],
-                                'full_name' => $row['full_name'],
-                                'email' => $row['email'],
-                                'gender' => $row['gender'],
-                                'is_admin' => $row['is_admin'],
-                                'profile_dir' => $row['profile_dir'],
-                                'token' => $token
-                            ];
+                            if($row['is_admin']){
+                                http_response_code(200);
+                                $returnData = [
+                                    'success' => 1,
+                                    'message' => 'You have successfully logged in.',
+                                    'acc_id' => $row['acc_id'],
+                                    'full_name' => $row['full_name'],
+                                    'email' => $row['email'],
+                                    'gender' => $row['gender'],
+                                    'is_admin' => $row['is_admin'],
+                                    'profile_dir' => $row['profile_dir'],
+                                    'token' => $token
+                                ];
+                            }
+                            else{
+                                $get_teacher_res = $obj->get_teacher_details($row['acc_id']);
+
+                                if($get_teacher_res->rowCount()>0){
+                                    $data = $get_teacher_res->fetch(PDO::FETCH_ASSOC);
+
+                                    http_response_code(200);
+                                    $returnData = [
+                                        'success' => 1,
+                                        'message' => 'You have successfully logged in.',
+                                        'acc_id' => $row['acc_id'],
+                                        'full_name' => $row['full_name'],
+                                        'email' => $row['email'],
+                                        'gender' => $row['gender'],
+                                        'is_admin' => $row['is_admin'],
+                                        'profile_dir' => $row['profile_dir'],
+                                        'position' => $data['position'],
+                                        'total_credits' => $data['total_credits'],
+                                        'token' => $token
+                                    ];
+                                }
+                                else{
+                                    http_response_code(400);
+                                    $returnData = msg(0, 401, 'Bad Request');
+                                }
+                            }
+
                         }
 
                         // IF PASSWORD IS INCORRECT

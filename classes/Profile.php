@@ -2,6 +2,8 @@
     class Profile{
         protected $db;
 
+        public $email;
+        public $password;
         public $profile_dir;
         public $acc_id;
         public $full_name;
@@ -11,6 +13,25 @@
 
         public function __construct($db){
             $this->db = $db;
+        }
+
+        public function login(){
+            $fetch_user_by_email = "SELECT * FROM accounts WHERE email=:email";
+            $query_stmt = $this->db->prepare($fetch_user_by_email);
+            $query_stmt->bindValue(':email', $this->email,PDO::PARAM_STR);
+            $query_stmt->execute();
+
+            return $query_stmt;
+
+        }
+
+        public function get_teacher_details($acc_id){
+            $fetch_teacher = "SELECT * FROM teachers WHERE acc_id=:acc_id";
+            $query_stmt = $this->db->prepare($fetch_teacher);
+            $query_stmt->bindValue(':acc_id', $acc_id,PDO::PARAM_STR);
+            $query_stmt->execute();
+
+            return $query_stmt;
         }
 
 
