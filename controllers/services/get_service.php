@@ -67,7 +67,8 @@
                 }
                 else{
                     http_response_code(400);
-                    echo json_encode($rows);
+                    $returnData = msg(0, 400, 'No Data');
+                    echo json_encode($returnData);
                 }
             }
             else{

@@ -61,7 +61,7 @@
 
                         if($info['status'] == 0){
                             http_response_code(400);
-                            $returnData = msg(0, 400, "tangaina", array($info));
+                            $returnData = msg(0, 400, "error");
                         }
                         else{
                             $service_dir = __DIR__ . '/../../storage/' . $data->teacher_id . '/service/' . $info['data']['service_id'] . '/';
@@ -71,7 +71,7 @@
                             umask($old);
 
                             http_response_code(201);
-                            $returnData = msg( 0, 201, "Created Successfully");
+                            $returnData = msg( 0, 201, "Created Successfully", array("service_id" => $info['data']['service_id']));
                         }
                     }
                     else{

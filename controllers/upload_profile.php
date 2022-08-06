@@ -35,7 +35,6 @@
 
             if($error != 1){
                 $acc_id = $_POST['acc_id'];
-                $base_url = "http://192.168.254.101/FST-REST_API/storage/";
                 $profile_dir = __DIR__ . "/../storage/".$acc_id.'/profile/';  
                 
                 $valid_extension = array('png', 'jpg', 'jpeg');
@@ -48,7 +47,7 @@
                         $upload_status = move_uploaded_file($path, $profile_dir.$file_name);
                         if($upload_status){ // move uploaded file to accounts directory
                             $obj->acc_id = intval($acc_id);
-                            $obj->profile_dir = $base_url.$acc_id.'/profile/'.$file_name;
+                            $obj->profile_dir = $_ENV["STORAGE_DIR"].$acc_id.'/profile/'.$file_name;
 
                             $result = $obj->updateProfile();
 

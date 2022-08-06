@@ -4,7 +4,7 @@ CREATE TABLE accounts(
     email VARCHAR(180) NOT NULL,
     password VARCHAR NOT NULL,
     gender VARCHAR(1) NOT NULL,
-    is_admin BOOLEAN NOT NULL
+    is_admin BOOLEAN NOT NULL,
     profile_dir VARCHAR DEFAULT concat('url/storage/', currval('accounts_acc_id_seq'))
 );
 
@@ -29,6 +29,6 @@ CREATE TABLE services(
     level_of_event VARCHAR NULL,
     credit_point INT DEFAULT 0,
     created_at DATE NOT NULL DEFAULT NOW(),
-    service_dir VARCHAR GENERATED ALWAYS as('http://192.168.254.101/FST-REST_API/storage/' || cast(teacher_id as text)|| '/service/' || cast(service_id as text)) stored,
+    service_dir VARCHAR GENERATED ALWAYS as('url/storage/' || cast(teacher_id as text)|| '/service/' || cast(service_id as text)) stored,
     teacher_id INT NOT NULL REFERENCES teachers(acc_id) ON DELETE CASCADE
 );
